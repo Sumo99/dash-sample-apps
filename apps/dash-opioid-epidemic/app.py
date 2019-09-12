@@ -225,12 +225,17 @@ app.layout = html.Div(
 )
 def display_map(year, figure):
     cm = dict(zip(BINS, DEFAULT_COLORSCALE))
-
+    def get_opioid_rate(county_code,year):
+        print(county_code)
+        df_county=df_full_data[df_full_data['County Code'] == str(county_code)]
+        df_county_year=df_county[df_county["Year"]==year]
+        return str(df_county_year["Age Adjusted Rate"])
+    get_opioid_rate(13111,2010)
     data = [
         dict(
             lat=df_lat_lon["Latitude "],
             lon=df_lat_lon["Longitude"],
-            text=df_lat_lon["Hover"],
+            text=df_lat_lon["Hover"]+get_opioid_rate(df_lat_lon["FIPS "],year),
             type="scattermapbox",
             hoverinfo="text",
             marker=dict(size=5, color="white", opacity=0),
